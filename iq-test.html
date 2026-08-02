@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Quiz — Fun Thinking Test</title>
+<style>
+  :root {
+    --bg1: #6a5cff;
+    --bg2: #00c2ff;
+    --card: #ffffff;
+    --ink: #23264d;
+    --muted: #6b6f99;
+    --good: #16b364;
+    --bad: #f04438;
+    --accent: #6a5cff;
+    --ring: #e6e6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px 48px;
+  }
+  .wrap { width: 100%; max-width: 680px; }
+  .card {
+    background: var(--card);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    padding: 28px 26px;
+  }
+  h1 { margin: 0 0 6px; font-size: 30px; }
+  .sub { color: var(--muted); margin: 0 0 18px; font-size: 15px; line-height: 1.5; }
+  .pill {
+    display: inline-block; background: var(--ring); color: var(--accent);
+    font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .bar {
+    height: 10px; background: var(--ring); border-radius: 999px; overflow: hidden; margin: 8px 0 22px;
+  }
+  .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--bg1), var(--bg2)); transition: width .35s ease; }
+  .qnum { color: var(--muted); font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .qtext { font-size: 22px; font-weight: 700; margin: 6px 0 20px; line-height: 1.35; }
+  .qtext .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 2px; }
+  .opts { display: grid; gap: 12px; }
+  .opt {
+    text-align: left; border: 2px solid var(--ring); background: #fbfbff; color: var(--ink);
+    padding: 15px 16px; border-radius: 14px; font-size: 17px; cursor: pointer; transition: .15s;
+    display: flex; align-items: center; gap: 12px; width: 100%;
+  }
+  .opt:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .opt .key {
+    flex: none; width: 30px; height: 30px; border-radius: 8px; background: var(--ring); color: var(--accent);
+    font-weight: 800; display: grid; place-items: center; font-size: 15px;
+  }
+  .opt.correct { border-color: var(--good); background: #e9fbf1; }
+  .opt.wrong { border-color: var(--bad); background: #fdeceb; }
+  .opt.correct .key { background: var(--good); color: #fff; }
+  .opt.wrong .key { background: var(--bad); color: #fff; }
+  .opt:disabled { cursor: default; }
+  .feedback { margin-top: 16px; font-size: 15px; min-height: 22px; font-weight: 600; }
+  .feedback.ok { color: var(--good); }
+  .feedback.no { color: var(--bad); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; }
+  button.next {
+    border: none; background: var(--accent); color: #fff; font-weight: 800; font-size: 16px;
+    padding: 13px 24px; border-radius: 12px; cursor: pointer; transition: .15s;
+  }
+  button.next:hover { filter: brightness(1.07); transform: translateY(-1px); }
+  button.next:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+  button.ghost { background: transparent; color: var(--accent); border: 2px solid var(--ring); }
+  .score-big { font-size: 64px; font-weight: 800; margin: 6px 0; }
+  .score-band { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .review { margin-top: 18px; border-top: 1px solid var(--ring); padding-top: 14px; }
+  .review h3 { margin: 0 0 10px; }
+  .rev-item { font-size: 14px; padding: 8px 0; border-bottom: 1px dashed var(--ring); line-height: 1.5; }
+  .rev-item .tag { font-weight: 800; }
+  .rev-item .tag.ok { color: var(--good); }
+  .rev-item .tag.no { color: var(--bad); }
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 18px; line-height: 1.5; }
+  .center { text-align: center; }
+  .emoji { font-size: 44px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="card">
+    <!-- Start screen -->
+    <div id="start">
+      <span class="pill">🧠 Brain Quiz</span>
+      <h1>The Fun Thinking Test</h1>
+      <p class="sub">
+        A friendly set of <strong>12 brain-teasers</strong> — patterns, words, numbers, and shapes.
+        Take your time, read carefully, and pick the best answer. There's no timer and no pressure.
+        Good luck!
+      </p>
+      <div class="center">
+        <span class="emoji">🌟</span>
+      </div>
+      <div class="row">
+        <span class="note" style="margin:0;">12 questions · about 10 minutes</span>
+        <button class="next" id="startBtn">Start the quiz →</button>
+      </div>
+    </div>
+
+    <!-- Quiz screen (hidden until start) -->
+    <div id="quiz" style="display:none;">
+      <div class="qnum" id="qnum">Question 1 of 12</div>
+      <div class="bar"><i id="progress"></i></div>
+      <div class="qtext" id="qtext"></div>
+      <div class="opts" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="row">
+        <span class="note" id="scoreNote" style="margin:0;">Score: 0</span>
+        <button class="next" id="nextBtn" disabled>Next →</button>
+      </div>
+    </div>
+
+    <!-- Results screen -->
+    <div id="results" style="display:none;">
+      <div class="center">
+        <span class="pill">🎉 All done!</span>
+        <div class="emoji" id="resEmoji">🏆</div>
+        <div class="score-big" id="resScore">0 / 12</div>
+        <div class="score-band" id="resBand"></div>
+        <p class="sub" id="resMsg" style="text-align:center;"></p>
+      </div>
+      <div class="review" id="review"></div>
+      <div class="row" style="justify-content:center;">
+        <button class="next ghost" id="againBtn">↺ Try again</button>
+      </div>
+      <p class="note">
+        This is a <strong>just-for-fun</strong> brain quiz to enjoy thinking puzzles — it is not a real
+        IQ test and does not measure intelligence. Everyone's brain is good at different things, and one
+        quiz can never capture how clever, creative, or curious a person is. Have fun! 😊
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    type: "Number pattern",
+    q: 'What number comes next? <span class="mono">2, 4, 6, 8, ?</span>',
+    opts: ["9", "10", "12", "16"],
+    answer: 1,
+    why: "The numbers go up by 2 each time, so after 8 comes 10."
+  },
+  {
+    type: "Odd one out",
+    q: "Which one does NOT belong with the others?",
+    opts: ["Apple", "Banana", "Carrot", "Orange"],
+    answer: 2,
+    why: "Apple, banana, and orange are fruits. A carrot is a vegetable."
+  },
+  {
+    type: "Word logic",
+    q: "Finger is to Hand as Toe is to ______ ?",
+    opts: ["Arm", "Foot", "Leg", "Knee"],
+    answer: 1,
+    why: "Fingers are part of a hand, and toes are part of a foot."
+  },
+  {
+    type: "Number pattern",
+    q: 'What number comes next? <span class="mono">1, 2, 4, 8, ?</span>',
+    opts: ["10", "12", "14", "16"],
+    answer: 3,
+    why: "Each number doubles: 1→2→4→8→16."
+  },
+  {
+    type: "Shapes / spatial",
+    q: "A shape has 3 straight sides and 3 corners. What is it?",
+    opts: ["Square", "Triangle", "Circle", "Pentagon"],
+    answer: 1,
+    why: "A triangle has exactly 3 sides and 3 corners."
+  },
+  {
+    type: "Logic word problem",
+    q: "Tom is taller than Sam. Sam is taller than Ben. Who is the tallest?",
+    opts: ["Tom", "Sam", "Ben", "Can't tell"],
+    answer: 0,
+    why: "Tom is taller than Sam, and Sam is taller than Ben — so Tom is the tallest."
+  },
+  {
+    type: "Letter pattern",
+    q: 'Which letter comes next? <span class="mono">A, C, E, G, ?</span>',
+    opts: ["H", "I", "J", "K"],
+    answer: 1,
+    why: "The pattern skips one letter each time (A, _, C, _, E...), so after G comes I."
+  },
+  {
+    type: "Everyday maths",
+    q: "You have 3 boxes with 4 pencils in each box. How many pencils in total?",
+    opts: ["7", "10", "12", "14"],
+    answer: 2,
+    why: "3 boxes × 4 pencils = 12 pencils."
+  },
+  {
+    type: "Word meaning",
+    q: 'Which word means the OPPOSITE of "ancient"?',
+    opts: ["Old", "Modern", "Broken", "Huge"],
+    answer: 1,
+    why: '"Ancient" means very old, so its opposite is "modern" (new)."'
+  },
+  {
+    type: "Number pattern",
+    q: 'What number is missing? <span class="mono">5, 10, ?, 20, 25</span>',
+    opts: ["12", "13", "15", "18"],
+    answer: 2,
+    why: "The numbers count up by 5 each time, so the missing one is 15."
+  },
+  {
+    type: "Logic",
+    q: "All robins are birds. All birds have feathers. So a robin definitely has ______ ?",
+    opts: ["Fur", "Feathers", "Scales", "Fins"],
+    answer: 1,
+    why: "If all birds have feathers and a robin is a bird, then a robin must have feathers."
+  },
+  {
+    type: "Code / pattern",
+    q: 'If <span class="mono">CAT = 3</span> and <span class="mono">TIGER = 5</span> (counting letters), what is <span class="mono">DOG</span>?',
+    opts: ["2", "3", "4", "6"],
+    answer: 1,
+    why: 'The number equals how many letters are in the word. "DOG" has 3 letters, so 3.'
+  }
+];
+
+const el = (id) => document.getElementById(id);
+let current = 0;
+let score = 0;
+let answers = []; // {qi, chosen, correct}
+
+function showStart() {
+  el("start").style.display = "block";
+  el("quiz").style.display = "none";
+  el("results").style.display = "none";
+}
+
+function startQuiz() {
+  current = 0; score = 0; answers = [];
+  el("start").style.display = "none";
+  el("results").style.display = "none";
+  el("quiz").style.display = "block";
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const item = QUESTIONS[current];
+  el("qnum").textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  el("progress").style.width = `${(current / QUESTIONS.length) * 100}%`;
+  el("qtext").innerHTML = `<span style="color:var(--muted);font-size:14px;font-weight:700;">${item.type}</span><br>${item.q}`;
+  el("feedback").textContent = "";
+  el("feedback").className = "feedback";
+  el("scoreNote").textContent = `Score: ${score}`;
+  el("nextBtn").disabled = true;
+
+  const keys = ["A", "B", "C", "D"];
+  const opts = el("opts");
+  opts.innerHTML = "";
+  item.opts.forEach((text, i) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = `<span class="key">${keys[i]}</span><span>${text}</span>`;
+    b.onclick = () => choose(i, b);
+    opts.appendChild(b);
+  });
+}
+
+function choose(i, btn) {
+  const item = QUESTIONS[current];
+  const buttons = el("opts").querySelectorAll(".opt");
+  buttons.forEach(b => b.disabled = true);
+
+  const isCorrect = i === item.answer;
+  if (isCorrect) {
+    btn.classList.add("correct");
+    score++;
+    el("feedback").textContent = "✅ Correct! " + item.why;
+    el("feedback").className = "feedback ok";
+  } else {
+    btn.classList.add("wrong");
+    buttons[item.answer].classList.add("correct");
+    el("feedback").textContent = "❌ Not quite. " + item.why;
+    el("feedback").className = "feedback no";
+  }
+  el("scoreNote").textContent = `Score: ${score}`;
+  el("nextBtn").disabled = false;
+  answers.push({ qi: current, chosen: i, correct: isCorrect });
+}
+
+function next() {
+  current++;
+  if (current < QUESTIONS.length) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  el("quiz").style.display = "none";
+  el("results").style.display = "block";
+  const total = QUESTIONS.length;
+  el("resScore").textContent = `${score} / ${total}`;
+
+  const pct = score / total;
+  let band, emoji, msg;
+  if (pct === 1) { band = "Perfect score! 🌟"; emoji = "🏆"; msg = "Wow — you got every single one! Amazing thinking."; }
+  else if (pct >= 0.8) { band = "Brilliant!"; emoji = "🌟"; msg = "Fantastic work — you're a super sharp thinker!"; }
+  else if (pct >= 0.6) { band = "Great job!"; emoji = "😎"; msg = "Really well done — lots of clever answers here."; }
+  else if (pct >= 0.4) { band = "Nice effort!"; emoji = "🙂"; msg = "Good going! Look at the answers below to learn a few new tricks."; }
+  else { band = "Keep going!"; emoji = "💪"; msg = "Every puzzle you try makes your brain stronger. Check the answers and try again!"; }
+
+  el("resEmoji").textContent = emoji;
+  el("resBand").textContent = band;
+  el("resMsg").textContent = msg;
+
+  // Review list
+  const rev = el("review");
+  rev.innerHTML = "<h3>Look back at your answers</h3>";
+  answers.forEach(a => {
+    const item = QUESTIONS[a.qi];
+    const chosenText = item.opts[a.chosen];
+    const correctText = item.opts[item.answer];
+    const div = document.createElement("div");
+    div.className = "rev-item";
+    if (a.correct) {
+      div.innerHTML = `<span class="tag ok">✓</span> <strong>Q${a.qi + 1}:</strong> ${item.q} — You chose <strong>${chosenText}</strong>. ${item.why}`;
+    } else {
+      div.innerHTML = `<span class="tag no">✗</span> <strong>Q${a.qi + 1}:</strong> ${item.q} — You chose <strong>${chosenText}</strong>. Correct answer: <strong>${correctText}</strong>. ${item.why}`;
+    }
+    rev.appendChild(div);
+  });
+}
+
+el("startBtn").onclick = startQuiz;
+el("nextBtn").onclick = next;
+el("againBtn").onclick = startQuiz;
+showStart();
+</script>
+</body>
+</html>
