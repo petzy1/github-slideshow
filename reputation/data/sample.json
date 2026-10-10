@@ -1,0 +1,21 @@
+{
+  "_note": "Placeholder numbers used only until real data is synced. Not real Grimsby Chevrolet figures.",
+  "google": {
+    "rating": 4.6,
+    "userRatingCount": 1250,
+    "googleMapsUri": "https://www.google.com/maps/search/?api=1&query=Grimsby+Chevrolet+Buick+GMC+Grimsby+ON",
+    "history": [
+      { "date": "2026-09-12", "rating": 4.55, "count": 1228 },
+      { "date": "2026-10-10", "rating": 4.6, "count": 1250 }
+    ],
+    "reviews": [
+      { "author": "Sample Customer A", "rating": 5, "relativeTime": "2 days ago", "text": "Example review: quick oil change and the advisor explained everything clearly." },
+      { "author": "Sample Customer B", "rating": 4, "relativeTime": "5 days ago", "text": "Example review: good selection, paperwork took a little longer than expected." },
+      { "author": "Sample Customer C", "rating": 2, "relativeTime": "1 week ago", "text": "Example review: had to call twice for an update on my repair." }
+    ]
+  },
+  "csi": {
+    "service": { "score": 91, "scale": 100, "target": 90, "previous": 89, "surveys": 64, "period": "Sep 2026 (sample)", "source": "GM Service CSI" },
+    "sales":   { "score": 94, "scale": 100, "target": 95, "previous": 95, "surveys": 38, "period": "Sep 2026 (sample)", "source": "GM Sales CSI" }
+  }
+}
