@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reputation Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Grimsby Chevrolet Buick GMC</h1>
+        <p class="subtitle">Reputation Dashboard</p>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span id="data-mode" class="badge" hidden></span>
+      <span id="last-updated" class="muted"></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="tiles" aria-label="Key metrics">
+      <!-- Google rating -->
+      <article class="tile" id="tile-google">
+        <header class="tile-head">
+          <h2>Google Rating</h2>
+          <span class="source">Google Business Profile</span>
+        </header>
+        <div class="tile-body">
+          <div class="metric">
+            <span class="metric-value" data-field="value">—</span>
+            <span class="metric-unit">/ 5</span>
+          </div>
+          <div class="stars" data-field="stars" aria-hidden="true"></div>
+          <p class="metric-sub" data-field="sub">Waiting for data</p>
+        </div>
+        <footer class="tile-foot">
+          <span class="delta" data-field="delta"></span>
+          <a data-field="link" href="#" target="_blank" rel="noopener" hidden>View on Google ↗</a>
+        </footer>
+      </article>
+
+      <!-- Service CSI -->
+      <article class="tile" id="tile-service">
+        <header class="tile-head">
+          <h2>Service CSI</h2>
+          <span class="source" data-field="source">GM CSI</span>
+        </header>
+        <div class="tile-body">
+          <div class="metric">
+            <span class="metric-value" data-field="value">—</span>
+            <span class="metric-unit" data-field="unit"></span>
+          </div>
+          <div class="gauge" data-field="gauge"><span></span><i></i></div>
+          <p class="metric-sub" data-field="sub">Not connected yet</p>
+        </div>
+        <footer class="tile-foot">
+          <span class="delta" data-field="delta"></span>
+          <span class="muted" data-field="period"></span>
+        </footer>
+      </article>
+
+      <!-- Sales CSI -->
+      <article class="tile" id="tile-sales">
+        <header class="tile-head">
+          <h2>Sales CSI</h2>
+          <span class="source" data-field="source">GM CSI</span>
+        </header>
+        <div class="tile-body">
+          <div class="metric">
+            <span class="metric-value" data-field="value">—</span>
+            <span class="metric-unit" data-field="unit"></span>
+          </div>
+          <div class="gauge" data-field="gauge"><span></span><i></i></div>
+          <p class="metric-sub" data-field="sub">Not connected yet</p>
+        </div>
+        <footer class="tile-foot">
+          <span class="delta" data-field="delta"></span>
+          <span class="muted" data-field="period"></span>
+        </footer>
+      </article>
+    </section>
+
+    <section class="panel" aria-labelledby="reviews-title">
+      <header class="panel-head">
+        <h2 id="reviews-title">Latest Google Reviews</h2>
+        <span class="muted" id="reviews-note"></span>
+      </header>
+      <ul class="reviews" id="reviews"></ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

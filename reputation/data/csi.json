@@ -1,0 +1,20 @@
+{
+  "service": {
+    "score": null,
+    "scale": 100,
+    "target": null,
+    "previous": null,
+    "surveys": null,
+    "period": null,
+    "source": "GM Service CSI"
+  },
+  "sales": {
+    "score": null,
+    "scale": 100,
+    "target": null,
+    "previous": null,
+    "surveys": null,
+    "period": null,
+    "source": "GM Sales CSI"
+  }
+}
